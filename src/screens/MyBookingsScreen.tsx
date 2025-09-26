@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import BookingCard from '../components/BookingCard';
 
 export default function MyBookingsScreen() {
   const [bookings, setBookings] = useState<any[]>([]);
@@ -65,19 +66,15 @@ export default function MyBookingsScreen() {
   return (
     <View style={styles.container}>
       {bookings.length === 0 ? (
-        <Text style={[styles.title, { textAlign: 'center', }]}>No Bookings yet</Text>
+        <Text style={styles.title}>
+          No Bookings yet
+        </Text>
       ) : (
         <FlatList
           data={bookings}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <View style={styles.card}>
-              <Text style={styles.title}>{item?.eventTitle}</Text>
-              <Text>
-                {item?.date} | Tickets: {item?.tickets}
-              </Text>
-              <Text>Booked At: {item?.bookedAt}</Text>
-            </View>
+            <BookingCard key={item.id} item={item} />
           )}
         />
       )}
@@ -91,16 +88,7 @@ export default function MyBookingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-  },
-  card: {
-    borderWidth: 1,
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 8,
-  },
-  title: {
-    fontWeight: 'bold',
+    padding: 5,
   },
   btn: {
     alignSelf: 'center',
@@ -119,4 +107,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
   },
+  title:{
+    fontSize: 17,
+    textAlign: 'center',
+    marginVertical: 50,
+  }
 });

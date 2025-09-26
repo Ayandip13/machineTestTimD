@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import events from '../../data/events.json';
 import { useNavigation } from '@react-navigation/native';
+import EventCard from '../components/EventCard';
 
 export const eventImages: Record<string, any> = {
   'techconf.png': require('../../assets/events/techconf.png'),
@@ -24,27 +25,11 @@ export default function EventListScreen() {
         data={events}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() =>
-              navigation.navigate('EventDetails', {
-                event: item,
-                imageSource: eventImages[item.image as string],
-              })
-            }
-          >
-            <Image
-              source={eventImages[item.image as string]}
-              style={styles.image}
-            />
-            <View>
-              <Text style={styles.title}>{item.title}</Text>
-              <Text>
-                {item.date} - {item.location}
-              </Text>
-              <Text>₹{item.price}</Text>
-            </View>
-          </TouchableOpacity>
+          <EventCard
+            item={item}
+            navigation={navigation}
+            eventImages={eventImages}
+          />
         )}
       />
     </View>
@@ -54,21 +39,5 @@ export default function EventListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  card: {
-    flexDirection: 'row',
-    margin: 10,
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  image: {
-    width: 60,
-    height: 60,
-    marginRight: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: 'bold',
   },
 });
