@@ -30,7 +30,9 @@ export default function MyBookingsScreen() {
             index: 0,
             routes: [{ name: 'Login' }],
           });
-          ToastAndroid.show('Logged out successfully', ToastAndroid.SHORT);
+          setTimeout(() => {
+            ToastAndroid.show('Logged out successfully', ToastAndroid.SHORT);
+          }, 200);
         },
       },
     ]);
@@ -66,19 +68,19 @@ export default function MyBookingsScreen() {
   return (
     <View style={styles.container}>
       {bookings.length === 0 ? (
-        <Text style={styles.title}>
-          No Bookings yet
-        </Text>
+        <Text style={styles.title}>No Bookings yet</Text>
       ) : (
         <FlatList
           data={bookings}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <BookingCard key={item.id} item={item} />
-          )}
+          renderItem={({ item }) => <BookingCard key={item.id} item={item} />}
         />
       )}
-      <TouchableOpacity onPress={handleLogout} style={styles.btn}>
+      <TouchableOpacity
+        // onPress={() => console.log("Logout pressed")}
+        onPress={handleLogout}
+        style={styles.btn}
+      >
         <Text style={styles.btntxt}>LogOut</Text>
       </TouchableOpacity>
     </View>
@@ -107,9 +109,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
   },
-  title:{
+  title: {
     fontSize: 17,
     textAlign: 'center',
     marginVertical: 50,
-  }
+  },
 });
