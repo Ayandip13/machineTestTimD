@@ -39,7 +39,19 @@ export default function MyBookingsScreen() {
     try {
       const raw = await AsyncStorage.getItem('bookings');
       const data = raw ? JSON.parse(raw) : [];
-      setBookings(data);
+      const currentUserRaw = await AsyncStorage.getItem('currentUser');
+      const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+      if (currentUser) {
+        const filtered = (data || []).filter((b: any) => {
+          if (b.userId && currentUser.id) return b.userId === currentUser.id;
+          if (b.username && currentUser.username)
+            return b.username === currentUser.username;
+          return false;
+        });
+        setBookings(filtered);
+      } else {
+        setBookings([]);
+      }
     } catch (err) {
       console.log('Error loading bookings', err);
     }
@@ -50,30 +62,25 @@ export default function MyBookingsScreen() {
     }, []),
   );
 
-  if (bookings.length === 0) {
-    return (
-      <View style={styles.container}>
-        <Text>No Bookings yet</Text>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
-      <FlatList
-        data={bookings}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
-            <Text style={styles.title}>{item?.eventTitle}</Text>
-            <Text>
-              {item?.date} | Tickets: {item?.tickets}
-            </Text>
-            <Text>Booked At: {item?.bookedAt}</Text>
-          </View>
-        )}
-      />
-
+      {bookings.length === 0 ? (
+        <Text style={[styles.title, { textAlign: 'center', }]}>No Bookings yet</Text>
+      ) : (
+        <FlatList
+          data={bookings}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.card}>
+              <Text style={styles.title}>{item?.eventTitle}</Text>
+              <Text>
+                {item?.date} | Tickets: {item?.tickets}
+              </Text>
+              <Text>Booked At: {item?.bookedAt}</Text>
+            </View>
+          )}
+        />
+      )}
       <TouchableOpacity onPress={handleLogout} style={styles.btn}>
         <Text style={styles.btntxt}>LogOut</Text>
       </TouchableOpacity>

@@ -13,19 +13,25 @@ import MyBookingsScreen from './screens/MyBookingsScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function TabBarIcon({
+  name,
+  color,
+  size,
+}: {
+  name: string;
+  color: string;
+  size: number;
+}) {
+  return <FontAwesome name={name} size={size} color={color} />;
+}
+
 function MainTabs() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
-          let iconName;
-
-          if (route.name === 'Events') {
-            iconName = 'calendar';
-          } else if (route.name === 'MyBookings') {
-            iconName = 'bookmark';
-          }
-          return <FontAwesome name={iconName} size={size} color={color} />;
+          const iconName = route.name === 'Events' ? 'calendar' : 'bookmark';
+          return <TabBarIcon name={iconName} size={size} color={color} />;
         },
       })}
     >
@@ -40,6 +46,7 @@ function MainTabs() {
         component={MyBookingsScreen}
       />
     </Tab.Navigator>
+    /* eslint-enable react/no-unstable-nested-components */
   );
 }
 
@@ -70,8 +77,16 @@ export default function AppNavigator() {
           component={MainTabs}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
-        <Stack.Screen name="Booking" component={BookingScreen} />
+        <Stack.Screen
+          name="EventDetails"
+          options={{ headerTitleAlign: 'center' }}
+          component={EventDetailsScreen}
+        />
+        <Stack.Screen
+          options={{ headerTitleAlign: 'center' }}
+          name="Booking"
+          component={BookingScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

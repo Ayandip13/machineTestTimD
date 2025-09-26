@@ -62,6 +62,14 @@ export default function BookingScreen() {
     };
 
     try {
+      // attach current user info to booking
+      const currentUserRaw = await AsyncStorage.getItem('currentUser');
+      const currentUser = currentUserRaw ? JSON.parse(currentUserRaw) : null;
+      if (currentUser) {
+        (newBooking as any).userId = currentUser.id ?? currentUser.userId ?? null;
+        (newBooking as any).username = currentUser.username ?? currentUser.name ?? null;
+      }
+
       const raw = await AsyncStorage.getItem('bookings');
       const existingBookings = raw ? JSON.parse(raw) : [];
       const existing = existingBookings || [];
