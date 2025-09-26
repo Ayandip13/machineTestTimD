@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   TouchableOpacity,
@@ -13,21 +12,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 export default function LoginScreen() {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
-    // Check credentials based on username & password
     const user = users.find(
       u => u.username === username && u.password === password,
     );
 
     if (user) {
-      // Save logged-in user in AsyncStorage
       await AsyncStorage.setItem('currentUser', JSON.stringify(user));
 
-      // Reset navigation to MainTabs
       navigation.reset({
         index: 0,
         routes: [{ name: 'MainTabs' }],
@@ -56,7 +52,6 @@ export default function LoginScreen() {
         value={password}
         onChangeText={setPassword}
       />
-      {/* <Button title="Login" onPress={handleLogin} /> */}
       <TouchableOpacity onPress={handleLogin} style={styles.btn}>
         <Text style={styles.btnText}>Login</Text>
       </TouchableOpacity>
@@ -73,14 +68,17 @@ const styles = StyleSheet.create({
   btnText: {
     color: '#000',
     fontWeight: 'bold',
-    padding: 10,
+    textAlign: 'center',
+    padding: 5,
   },
   btn: {
-    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop: '10%',
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
+    width: '60%',
     elevation: 3,
     backgroundColor: '#cdf5ffff',
   },
@@ -90,9 +88,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     marginBottom: 10,
-    padding: 10,
-    borderRadius: 5,
+    paddingLeft: 20,
+    borderColor: '#005a66ff',
+    borderRadius: 10,
   },
 });

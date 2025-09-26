@@ -10,7 +10,7 @@ import {
 import events from '../../data/events.json';
 import { useNavigation } from '@react-navigation/native';
 
-export const eventImages = {
+export const eventImages: Record<string, any> = {
   'techconf.png': require('../../assets/events/techconf.png'),
   'pitchfest.png': require('../../assets/events/pitchfest.png'),
   'concert.png': require('../../assets/events/concert.png'),
@@ -29,11 +29,14 @@ export default function EventListScreen() {
             onPress={() =>
               navigation.navigate('EventDetails', {
                 event: item,
-                imageSource: eventImages[item.image],
+                imageSource: eventImages[item.image as string],
               })
             }
           >
-            <Image source={eventImages[item.image]} style={styles.image} />
+            <Image
+              source={eventImages[item.image as string]}
+              style={styles.image}
+            />
             <View>
               <Text style={styles.title}>{item.title}</Text>
               <Text>
@@ -49,7 +52,9 @@ export default function EventListScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+  },
   card: {
     flexDirection: 'row',
     margin: 10,

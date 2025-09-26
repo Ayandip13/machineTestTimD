@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import LoginScreen from './screens/LoginScreen';
 import EventListScreen from './screens/EventListScreen';
 import EventDetailsScreen from './screens/EventDetailsScreen';
@@ -15,9 +15,30 @@ const Tab = createBottomTabNavigator();
 
 function MainTabs() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="Events" component={EventListScreen} />
-      <Tab.Screen name="MyBookings" component={MyBookingsScreen} />
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color, size }) => {
+          let iconName;
+
+          if (route.name === 'Events') {
+            iconName = 'calendar';
+          } else if (route.name === 'MyBookings') {
+            iconName = 'bookmark';
+          }
+          return <FontAwesome name={iconName} size={size} color={color} />;
+        },
+      })}
+    >
+      <Tab.Screen
+        options={{ headerTitleAlign: 'center' }}
+        name="Events"
+        component={EventListScreen}
+      />
+      <Tab.Screen
+        name="MyBookings"
+        options={{ headerTitleAlign: 'center' }}
+        component={MyBookingsScreen}
+      />
     </Tab.Navigator>
   );
 }
@@ -39,8 +60,16 @@ export default function AppNavigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={isLoggedIn ? 'MainTabs' : 'Login'}>
-        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen name="EventDetails" component={EventDetailsScreen} />
         <Stack.Screen name="Booking" component={BookingScreen} />
       </Stack.Navigator>

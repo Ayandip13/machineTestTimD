@@ -1,15 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -17,102 +15,107 @@ export default function BookingScreen() {
   const navigation: any = useNavigation();
   const route: any = useRoute();
   const { event } = route.params || {};
-  const { control, handleSubmit, reset } = useForm();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [tickets, setTickets] = useState('');
 
-  const onSubmit = async (data: any) => {
-    if (!data.name || !data.email || !data.phone || !data.tickets) {
+  const validate = () => {
+    if (!name.trim() || !email.trim() || !phone.trim() || !tickets.trim()) {
       ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT);
+      return false;
     }
+    const ticketsNum = Number(tickets);
+    if (!Number.isFinite(ticketsNum) || ticketsNum <= 0) {
+      ToastAndroid.show(
+        'Please enter a valid number of tickets',
+        ToastAndroid.SHORT,
+      );
+      return false;
+    }
+    // simple email check
+    const emailRegex = /\S+@\S+\.\S+/;
+    if (!emailRegex.test(email)) {
+      ToastAndroid.show('Please enter a valid email', ToastAndroid.SHORT);
+      return false;
+    }
+    return true;
+  };
+
+  const onSubmit = async () => {
+    if (!validate()) return;
+    if (!event) {
+      ToastAndroid.show('No event found', ToastAndroid.SHORT);
+      return;
+    }
+
     const newBooking = {
       id: Date.now(),
       eventId: event.id,
       eventTitle: event.title,
       date: event.date,
-      tickets: data.tickets,
-      name: data.name,
-      email: data.email,
-      phone: data.phone,
-      bookedAt: new Date().toISOString(),
+      tickets: Number(tickets),
+      name: name.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      bookedAt: new Date().toLocaleTimeString(),
     };
 
-    const raw = await AsyncStorage.getItem('bookings');
-    const existingBookings = raw ? JSON.parse(raw) : [];
-    const existing = existingBookings || [];
-    existing.push(newBooking);
-    await AsyncStorage.setItem('bookings', JSON.stringify(existing));
-    Alert.alert('Success', 'Booking saved!');
-    reset();
-    navigation.goBack();
+    try {
+      const raw = await AsyncStorage.getItem('bookings');
+      const existingBookings = raw ? JSON.parse(raw) : [];
+      const existing = existingBookings || [];
+      existing.push(newBooking);
+      await AsyncStorage.setItem('bookings', JSON.stringify(existing));
+      Alert.alert('Success', 'Booking saved!');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setTickets('');
+      navigation.goBack();
+    } catch (err) {
+      console.log('Error saving booking', err);
+      Alert.alert('Error', 'Failed to save booking');
+    }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Booking for {event.title}</Text>
 
-      <Controller
-        control={control}
-        name="name"
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholderTextColor={'#000'}
-            placeholder="Name"
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
+      <TextInput
+        style={styles.input}
+        placeholderTextColor={'#000'}
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
       />
-      <Controller
-        control={control}
-        name="email"
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholderTextColor={'#000'}
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
+      <TextInput
+        style={styles.input}
+        placeholderTextColor={'#000'}
+        placeholder="Email"
+        keyboardType="email-address"
+        autoCapitalize="none"
+        value={email}
+        onChangeText={setEmail}
       />
-      <Controller
-        control={control}
-        name="phone"
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholderTextColor={'#000'}
-            placeholder="Phone"
-            keyboardType="phone-pad"
-            value={value}
-            onChangeText={onChange}
-          />
-        )}
+      <TextInput
+        style={styles.input}
+        placeholderTextColor={'#000'}
+        placeholder="Phone"
+        keyboardType="phone-pad"
+        value={phone}
+        onChangeText={setPhone}
       />
-      <Controller
-        control={control}
-        name="tickets"
-        rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Tickets"
-            placeholderTextColor={'#000'}
-            value={value}
-            onChangeText={onChange}
-            keyboardType="numeric"
-          />
-        )}
+      <TextInput
+        style={styles.input}
+        placeholder="Tickets"
+        placeholderTextColor={'#000'}
+        value={tickets}
+        onChangeText={setTickets}
+        keyboardType="numeric"
       />
-      <TouchableOpacity
-        style={styles.btn}
-        onPress={() => handleSubmit(onSubmit)}
-      >
+      <TouchableOpacity style={styles.btn} onPress={onSubmit}>
         <Text>Submit Booking</Text>
       </TouchableOpacity>
     </View>

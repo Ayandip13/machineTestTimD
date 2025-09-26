@@ -1,10 +1,39 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ToastAndroid,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 
 export default function MyBookingsScreen() {
   const [bookings, setBookings] = useState<any[]>([]);
+  const navigation: any = useNavigation();
+
+  const handleLogout = async () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Logout',
+        onPress: async () => {
+          await AsyncStorage.removeItem('currentUser');
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'Login' }],
+          });
+          ToastAndroid.show('Logged out successfully', ToastAndroid.SHORT);
+        },
+      },
+    ]);
+  };
 
   const loadBookings = async () => {
     try {
@@ -44,6 +73,10 @@ export default function MyBookingsScreen() {
           </View>
         )}
       />
+
+      <TouchableOpacity onPress={handleLogout} style={styles.btn}>
+        <Text style={styles.btntxt}>LogOut</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -61,5 +94,22 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
+  },
+  btn: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    width: '60%',
+    paddingHorizontal: 32,
+    borderRadius: 10,
+    elevation: 3,
+    backgroundColor: '#cdf5ffff',
+  },
+  btntxt: {
+    color: '#000',
+    fontWeight: 'bold',
+    padding: 5,
+    textAlign: 'center',
+    fontSize: 16,
   },
 });
