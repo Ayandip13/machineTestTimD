@@ -36,5 +36,6 @@ export default function EventListScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#E8F9FF'
   },
 });

@@ -38,7 +38,7 @@ export default function LoginScreen() {
       <Text style={styles.title}>Login</Text>
       <TextInput
         style={styles.input}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         autoCapitalize="none"
         placeholder="Username"
         value={username}
@@ -46,10 +46,11 @@ export default function LoginScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         autoCapitalize="none"
         placeholder="Password"
         value={password}
+        keyboardType='name-phone-pad'
         onChangeText={setPassword}
       />
       <TouchableOpacity onPress={handleLogin} style={styles.btn}>
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
+    backgroundColor: '#E8F9FF',
   },
   btnText: {
     color: '#000',
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+    fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
   },

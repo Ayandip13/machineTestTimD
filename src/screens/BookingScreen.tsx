@@ -91,14 +91,14 @@ export default function BookingScreen() {
 
       <TextInput
         style={styles.input}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         placeholder="Name"
         value={name}
         onChangeText={setName}
       />
       <TextInput
         style={styles.input}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         placeholder="Email"
         keyboardType="email-address"
         autoCapitalize="none"
@@ -107,7 +107,7 @@ export default function BookingScreen() {
       />
       <TextInput
         style={styles.input}
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         placeholder="Phone"
         keyboardType="phone-pad"
         value={phone}
@@ -116,7 +116,7 @@ export default function BookingScreen() {
       <TextInput
         style={styles.input}
         placeholder="Tickets"
-        placeholderTextColor={'#000'}
+        placeholderTextColor={'#777'}
         value={tickets}
         onChangeText={setTickets}
         keyboardType="numeric"
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#E8F9FF',
   },
   title: {
     fontSize: 20,
@@ -139,18 +140,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   input: {
-    borderWidth: 0.5,
-    padding: 10,
+    borderWidth: 0.2,
+    backgroundColor: '#FBFBFB',
+    borderColor: '#C5BAFF',
+    paddingLeft: 15,
     marginBottom: 10,
     borderRadius: 5,
   },
   btn: {
     alignItems: 'center',
+    marginTop: '10%',
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    elevation: 3,
-    backgroundColor: '#cdf5ffff',
+    elevation: 5,
+    backgroundColor: '#C4D9FF',
   },
 });

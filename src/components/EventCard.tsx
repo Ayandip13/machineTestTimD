@@ -44,7 +44,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     margin: 10,
     padding: 10,
-    borderWidth: 0.5,
+    backgroundColor: '#FBFBFB',
+    elevation: 5,
     borderRadius: 8,
   },
   image: {

@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 5,
+    backgroundColor: '#E8F9FF',
   },
   btn: {
     alignSelf: 'center',
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 10,
     elevation: 3,
-    backgroundColor: '#cdf5ffff',
+    backgroundColor: '#C4D9FF',
   },
   btntxt: {
     color: '#000',

@@ -1,12 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function EventDetailsScreen() {
   const navigation: any = useNavigation();
@@ -16,14 +10,13 @@ export default function EventDetailsScreen() {
 
   return (
     <View style={styles.container}>
-      <Image source={imageSource} style={styles.image} resizeMode="contain" />
-      <Text style={styles.title}>{event.title}</Text>
-      <Text style={styles.title2}>{event.description}</Text>
-      <Text style={styles.title2}>Date: {event.date}</Text>
-      <Text style={styles.title2}>Time: {event.time}</Text>
-      <Text style={styles.title2}>Location: {event.location}</Text>
-      <Text style={styles.title2}>Price: ₹{event.price}</Text>
-
+        <Image source={imageSource} style={styles.image} resizeMode="contain" />
+        <Text style={styles.title}>{event.title}</Text>
+        <Text style={styles.title2}>{event.description}</Text>
+        <Text style={styles.title2}>Date: {event.date}</Text>
+        <Text style={styles.title2}>Time: {event.time}</Text>
+        <Text style={styles.title2}>Location: {event.location}</Text>
+        <Text style={styles.title2}>Price: ₹{event.price}</Text>
       <TouchableOpacity
         style={styles.btn}
         onPress={() => navigation.navigate('Booking', { event })}
@@ -37,6 +30,7 @@ export default function EventDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#E8F9FF',
     padding: 20,
   },
   image: {
@@ -61,11 +55,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#cdf5ffff',
+    backgroundColor: '#C4D9FF',
   },
   btntxt: {
     color: '#3b3b3bff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  content: {
+    backgroundColor: '#E8F9FF',
   },
 });
