@@ -18,7 +18,7 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     const user = users.find(
-      u => u.username === username && u.password === password,
+      u => u.username === username.trim() && u.password === password.trim(),
     );
 
     if (user) {
@@ -50,7 +50,7 @@ export default function LoginScreen() {
         autoCapitalize="none"
         placeholder="Password"
         value={password}
-        keyboardType='name-phone-pad'
+        keyboardType="name-phone-pad"
         onChangeText={setPassword}
       />
       <TouchableOpacity onPress={handleLogin} style={styles.btn}>
