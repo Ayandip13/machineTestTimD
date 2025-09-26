@@ -1,18 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import React from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const BookingCard = ({ item }: { item: any }) => {
-  const handleDelete = async () => {
-    try {
-      const rawData = await AsyncStorage.getItem('bookings');
-      const dataArr = rawData ? JSON.parse(rawData) : [];
-      const filteredData = dataArr.filter((b: any) => b.id !== item.id);
-      await AsyncStorage.setItem('bookings', JSON.stringify(filteredData));
-    } catch (error) {
-      console.log(error);
-      Alert.alert('Error', 'Error Deleting Bookings');
-    }
+const BookingCard = ({ item, onDelete }: { item: any; onDelete?: (id: number) => void }) => {
+  const confirmDelete = () => {
+    Alert.alert('Delete booking', 'Are you sure you want to delete this booking?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', style: 'destructive', onPress: () => onDelete && onDelete(item.id) },
+    ]);
   };
   return (
     <View style={styles.card}>
@@ -23,7 +17,7 @@ const BookingCard = ({ item }: { item: any }) => {
         </Text>
         <Text>Booked At: {item?.bookedAt}</Text>
       </View>
-      <TouchableOpacity onPress={handleDelete}>
+      <TouchableOpacity onPress={confirmDelete}>
         <Text style={styles.cross}>X</Text>
       </TouchableOpacity>
     </View>

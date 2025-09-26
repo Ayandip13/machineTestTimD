@@ -59,6 +59,24 @@ export default function MyBookingsScreen() {
       console.log('Error loading bookings', err);
     }
   };
+
+  const handleDelete = async (id: number) => {
+    const prev = bookings;
+    const updated = bookings.filter(b => b.id !== id);
+    setBookings(updated);
+
+    try {
+      const raw = await AsyncStorage.getItem('bookings');
+      const data = raw ? JSON.parse(raw) : [];
+      const filtered = (data || []).filter((b: any) => b.id !== id);
+      await AsyncStorage.setItem('bookings', JSON.stringify(filtered));
+      ToastAndroid.show('Booking deleted', ToastAndroid.SHORT);
+    } catch (err) {
+      console.error('Failed to delete booking', err);
+      Alert.alert('Error', 'Failed to delete booking');
+      setBookings(prev);
+    }
+  };
   useFocusEffect(
     useCallback(() => {
       loadBookings();
@@ -72,8 +90,8 @@ export default function MyBookingsScreen() {
       ) : (
         <FlatList
           data={bookings}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => <BookingCard key={item.id} item={item} />}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => <BookingCard item={item} onDelete={handleDelete} />}
         />
       )}
       <TouchableOpacity
