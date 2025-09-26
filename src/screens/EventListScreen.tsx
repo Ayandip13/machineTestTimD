@@ -1,10 +1,7 @@
 import React from 'react';
 import {
   View,
-  Text,
   FlatList,
-  TouchableOpacity,
-  Image,
   StyleSheet,
 } from 'react-native';
 import events from '../../data/events.json';

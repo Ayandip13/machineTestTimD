@@ -8,15 +8,13 @@ import {
 } from 'react-native';
 import React from 'react';
 
-const EventCard = ({
-  item,
-  navigation,
-  eventImages,
-}: {
+interface EventCardProps {
   item: any;
   navigation: any;
   eventImages: ImageSource;
-}) => {
+}
+
+const EventCard = ({ item, navigation, eventImages }: EventCardProps) => {
   return (
     <TouchableOpacity
       style={styles.card}

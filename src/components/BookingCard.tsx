@@ -4,7 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BookingCard = ({ item }: { item: any }) => {
   const handleDelete = async () => {
-    await AsyncStorage.removeItem('bookings');
+    const rawData = await AsyncStorage.getItem('bookings');
+    const dataArr = rawData ? JSON.parse(rawData) : [];
+    const filteredData = dataArr.filter((b: any) => b.id !== item.id);
+    await AsyncStorage.setItem('bookings', JSON.stringify(filteredData));
   };
   return (
     <View style={styles.card}>

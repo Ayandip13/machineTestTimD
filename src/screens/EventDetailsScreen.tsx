@@ -12,12 +12,10 @@ export default function EventDetailsScreen() {
   const navigation: any = useNavigation();
   const route: any = useRoute();
 
-  // we get both event and imageSource from params
   const { event, imageSource } = route.params || {};
 
   return (
     <View style={styles.container}>
-      {/* Use the passed imageSource directly */}
       <Image source={imageSource} style={styles.image} resizeMode="contain" />
       <Text style={styles.title}>{event.title}</Text>
       <Text style={styles.title2}>{event.description}</Text>

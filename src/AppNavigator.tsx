@@ -9,44 +9,41 @@ import EventListScreen from './screens/EventListScreen';
 import EventDetailsScreen from './screens/EventDetailsScreen';
 import BookingScreen from './screens/BookingScreen';
 import MyBookingsScreen from './screens/MyBookingsScreen';
+import { Image } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function TabBarIcon({
-  name,
-  color,
-  size,
-}: {
-  name: string;
-  color: string;
-  size: number;
-}) {
-  return <FontAwesome name={name} size={size} color={color} />;
-}
-
 function MainTabs() {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          const iconName = route.name === 'Events' ? 'calendar' : 'bookmark';
-          return <TabBarIcon name={iconName} size={size} color={color} />;
-        },
-      })}
-    >
+    <Tab.Navigator>
       <Tab.Screen
-        options={{ headerTitleAlign: 'center' }}
         name="Events"
         component={EventListScreen}
+        options={{
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('../assets/tabIcons/calendar.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
       />
       <Tab.Screen
         name="MyBookings"
-        options={{ headerTitleAlign: 'center' }}
         component={MyBookingsScreen}
+        options={{
+          headerTitleAlign: 'center',
+          tabBarIcon: ({ color, size }) => (
+            <Image
+              source={require('../assets/tabIcons/bookmark.png')}
+              style={{ width: size, height: size, tintColor: color }}
+            />
+          ),
+        }}
       />
     </Tab.Navigator>
-    /* eslint-enable react/no-unstable-nested-components */
   );
 }
 
